@@ -12,7 +12,7 @@ endif::[]
 
 # An MQTT bridge for unleashing your Beenera data
 
-This project provides a bridge to receive data from the Beenera project (https://beenera.de/) and pass it on to another MQTT broker.
+This project provides a bridge to receive data from the Beenera project (https://beenera.de/, formerly Enera) and pass it on to another MQTT broker.
 
 This way, the provided information can easily be used in home automation systems like OpenHAB, Home Assistant, FHEM, iobroker or all others that provide some means to access data via MQTT.
 
@@ -39,6 +39,39 @@ systemctl enable mosquitto
 should be enough.
 
 ## setting up beenera-mqtt-bridge
+
+### using Docker
+
+If you are looking for a one-liner, try the following:
+
+```shell
+docker run \
+    --name beenera-mqtt-bridge \
+    -e BEENERA_USER=<username> \
+    -e BEENERA_PASSWORD=<password> \
+    -e LOGLEVEL=INFO \
+    -e MQTT_HOST=localhost \
+    -e MQTT_TOPIC_BASE=power/ \
+    --restart unless-stopped \
+    oliverrahner/beenera-mqtt-bridge
+```
+
+Or, using `docker compose`, a `docker-compose.yml` could look like this:
+```yaml
+version: "3.7"
+services:
+  beenera-mqtt-bridge:
+    image: oliverrahner/beenera-mqtt-bridge
+    restart: unless-stopped
+    environment:
+      - BEENERA_USER=<username>
+      - BEENERA_PASSWORD=<password>
+      - LOGLEVEL=INFO
+      - MQTT_HOST=localhost
+      - MQTT_TOPIC_BASE=power/
+    # this is only required when the MQTT_HOST is localhost
+    network_mode: host
+```
 
 
 ### retrieve Meter ID [[get-meter-id]]
