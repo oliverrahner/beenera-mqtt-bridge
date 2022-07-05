@@ -1,0 +1,7 @@
+config.py
+venv/
+.idea
+__pycache__/
+build/
+dist/
+run.spec
