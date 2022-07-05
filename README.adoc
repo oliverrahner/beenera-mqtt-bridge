@@ -22,7 +22,7 @@ apt update
 apt install -y mosquitto mosquitto-clients
 ```
 
-> :warning: The default install allows anonymous and unencrypted traffic from all machines! This is, if at all, only suitable in your internal home network.
+WARNING: The default install allows anonymous and unencrypted traffic from all machines! This is, if at all, only suitable in your internal home network.
 
 The broker should automatically start up on reboot. If that's not the case, a simple
 ```shell
