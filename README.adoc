@@ -7,6 +7,7 @@ ifdef::env-github[]
 endif::[]
 
 :toc:
+:toc-titel:
 :toc-placement!:
 
 # beenera-mqtt-bridge
@@ -15,6 +16,7 @@ This project provides a bridge to receive data from the Beenera project (https:/
 
 This way, the provided information can easily be used in home automation systems like OpenHAB, Home Assistant, FHEM, iobroker or all others that provide some means to access data via MQTT.
 
+## Contents
 toc::[]
 
 ## Setup
