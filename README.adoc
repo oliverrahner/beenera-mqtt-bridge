@@ -1,8 +1,11 @@
 # beenera-mqtt-bridge
 
-This project provides a "bridge" to receive data from the Beenera project (https://beenera.de/) and pass it on to another MQTT broker.
+This project provides a bridge to receive data from the Beenera project (https://beenera.de/) and pass it on to another MQTT broker.
 
-Via this way, one can easily use the provided information in home automation systems like OpenHAB, Home Assistant, FHEM, iobroker or all others that provide some means to access data via MQTT.
+This way, the provided information can easily be used in home automation systems like OpenHAB, Home Assistant, FHEM, iobroker or all others that provide some means to access data via MQTT.
+
+:toc:
+
 
 ## Setup
 
@@ -43,7 +46,7 @@ To get the MQTT values into OpenHAB, create the following configuration:
 Bridge mqtt:broker:broker [ host="localhost", secure=false, clientid="openhab"]
 
 Thing mqtt:topic:power:<Meter ID> "Beenera <Meter ID>" (mqtt:broker:broker) {
-// you can freely rename the channel names, just be sure to change the items accordingly
+// you can freely rename the channels, just be sure to change the items accordingly
     Channels:
         Type number : CurrentPower            [stateTopic="power/<Meter ID>", transformationPattern="JSONPATH:$.items[0].values[?(@.obis=='1-0:16.7.0*255')].value"]
         Type number : PowerConsumptionMeter   [stateTopic="power/<Meter ID>", transformationPattern="JSONPATH:$.items[0].values[?(@.obis=='1-0:1.8.0*255')].value"]
