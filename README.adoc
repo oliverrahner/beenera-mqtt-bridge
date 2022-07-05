@@ -94,6 +94,12 @@ Again, replace the `<Meter ID>` everywhere.
 
 ### Home Assistant
 
+First, configure the MQTT integration: Settings >> Devices & Services >> Integrations >> Add Integration >> MQTT
+
+The configuration should be straightforward.
+
+
+
 Add the following snippet to your `configuration.yaml`:
 
 ```yaml
