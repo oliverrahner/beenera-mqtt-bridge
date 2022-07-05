@@ -19,9 +19,7 @@ This way, the provided information can easily be used in home automation systems
 ## Contents
 toc::[]
 
-## Setup
-
-### MQTT broker
+## setting up an MQTT broker
 
 If you do not currently have an MQTT broker available, you can simply install one.
 The easiest is to install it on the same machine as your home automation system.
@@ -40,7 +38,20 @@ systemctl enable mosquitto
 ```
 should be enough.
 
-### beenera-mqtt-bridge
+## setting up beenera-mqtt-bridge
+
+
+### retrieve Meter ID [[get-meter-id]]
+
+You can easily look it up in the Beenera app, by examining the log output of the bridge or by plain looking at your meter 😉
+
+The bridge will log a line like this:
+```
+First time publishing data to topic 'power/1EMH000....'
+```
+where 1EMH000... is your meter ID.
+
+## setting up your home automation solution
 
 
 
@@ -66,13 +77,7 @@ Thing mqtt:topic:power:<Meter ID> "Beenera <Meter ID>" (mqtt:broker:broker) {
 }
 ```
 
-Be sure to replace `<Meter ID>` by your actual meter ID. You can easily look it up in the Beenera app, by examining the log output of the bridge or by plain looking at your meter 😉
-
-The bridge will log a line like this:
-```
-First time publishing data to topic 'power/1EMH000....'
-```
-where 1EMH000... is your meter ID.
+Be sure to replace `<Meter ID>` with your actual link:#get-meter-id[meter ID].
 
 #### Items
 
@@ -87,3 +92,45 @@ Number pow_beenera_ConsumptionMeter "Meter Reading Consumption [%.1f Wh]" { chan
 
 Again, replace the `<Meter ID>` everywhere.
 
+### Home Assistant
+
+Add the following snippet to your `configuration.yaml`:
+
+```yaml
+mqtt:
+  sensor:
+    - name: "current_power"
+      state_topic: "power/<Meter ID>"
+      state_class: measurement
+      unit_of_measurement: W
+      device_class: power
+      expire_after: 60
+      icon: mdi:home-lightning-bolt
+      value_template: >
+        {{ (value_json["items"][0]["values"]|selectattr('obis', 'eq', '1-0:16.7.0*255')|list|first)["value"] }}
+    - name: "power_consumption_total"
+      state_topic: "power/<Meter ID>"
+      state_class: total
+      unit_of_measurement: Wh
+      device_class: energy
+      icon: mdi:transmission-tower-import
+      value_template: >
+        {{ (value_json["items"][0]["values"]|selectattr('obis', 'eq', '1-0:1.8.0*255')|list|first)["value"] }}
+    - name: "power_delivery_total"
+      state_topic: "power/<Meter ID>"
+      state_class: total
+      unit_of_measurement: Wh
+      device_class: energy
+      icon: mdi:transmission-tower-export
+      value_template: >
+        {{ (value_json["items"][0]["values"]|selectattr('obis', 'eq', '1-0:2.8.0*255')|list|first)["value"] }}
+
+# if you want to use the Home Assistant energy dashboard, you will need this:
+utility_meter:
+  energy_in:
+    source: sensor.power_consumption_total
+  energy_out:
+    source: sensor.power_delivery_total
+```
+
+Replace `<Meter ID>` by your link:#get-meter-id[meter ID].
