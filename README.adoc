@@ -10,7 +10,7 @@ endif::[]
 :toc-title:
 :toc-placement!:
 
-# beenera-mqtt-bridge
+# An MQTT bridge for unleashing your Beenera data
 
 This project provides a bridge to receive data from the Beenera project (https://beenera.de/) and pass it on to another MQTT broker.
 
