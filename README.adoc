@@ -52,6 +52,7 @@ docker run \
     -e LOGLEVEL=INFO \
     -e MQTT_HOST=localhost \
     -e MQTT_TOPIC_BASE=power/ \
+    --network host \
     --restart unless-stopped \
     oliverrahner/beenera-mqtt-bridge
 ```
