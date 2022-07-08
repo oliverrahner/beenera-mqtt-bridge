@@ -54,6 +54,7 @@ docker run \
     -e MQTT_TOPIC_BASE=power/ \
     --network host \
     --restart unless-stopped \
+    --detach
     oliverrahner/beenera-mqtt-bridge
 ```
 
