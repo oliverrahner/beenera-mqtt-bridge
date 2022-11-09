@@ -112,8 +112,11 @@ class UpstreamMqttConnection:
     def __init__(self, config):
         self.host = config.MQTT_HOST
         self.port = config.MQTT_PORT or 1883
+        self.username = config.MQTT_USER or None
+        self.password = config.MQTT_PASSWORD or None
         self.topic_base = config.MQTT_TOPIC_BASE
         self.mqtt_client = Client(client_id=str(uuid.uuid4()), reconnect_on_failure=True)
+        self.mqtt_client.username_pw_set(self.username, self.password)
         self.mqtt_client.on_connect = self.on_connect
         self.mqtt_client.on_disconnect = self.on_disconnect
         self.logger = logger.getChild(self.__class__.__name__)
